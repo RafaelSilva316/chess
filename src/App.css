@@ -1,0 +1,40 @@
+.App {
+  background-color: #333;
+  padding: 4rem;
+}
+
+h1 {
+  color: white;
+  font-size: 3.2rem;
+}
+
+.Board {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  width: 60rem;
+  height: 60rem;
+  margin: 4rem auto;
+  background-color: black;
+  border: 1rem solid #f2d561;
+}
+
+.Tile {
+  display: flex;
+  justify-content: center;
+}
+
+.Tile img {
+  cursor: pointer;
+}
+
+.Tile:hover {
+  background-color: rgb(238, 245, 179) !important;
+}
+
+.draggable-piece:hover {
+  cursor: grab;
+}
+
+.draggable-piece:active {
+  cursor: grabbing;
+}
