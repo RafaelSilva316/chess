@@ -207,10 +207,9 @@ const pieceTypes = {
       let deltaX = Math.abs(nextX - prevX);
       let dir;
 
-      console.log(`nextY: ${nextY}`);
-      console.log(`nextX: ${nextX}`);
-      console.log(`prevY: ${prevY}`);
-      console.log(`prevX: ${prevX}`);
+      // console.log(
+      //   `nextY: ${nextY}, nextX: ${nextX} prevY: ${prevY} prevX: ${prevX}`
+      // );
 
       if (nextX - prevX === 0) {
         if (nextY > prevY) {
@@ -237,7 +236,7 @@ const pieceTypes = {
           dir = "upleft";
         }
       }
-
+      // console.log(dir);
       if (dir === "up") {
         for (let i = 1; i < deltaY; i++) {
           if (board[prevY - i][prevX].piece !== "empty") {
@@ -279,8 +278,10 @@ const pieceTypes = {
       }
 
       if (dir === "upright") {
+        // console.log({ deltaY });
         for (let i = 1; i < deltaY; i++) {
-          if (board[prevY - i][nextX - i].piece !== "empty") {
+          if (board[prevY - i][prevX + i].piece !== "empty") {
+            // console.log(`${prevY - i} ${nextX - i}`);
             return false;
           }
         }

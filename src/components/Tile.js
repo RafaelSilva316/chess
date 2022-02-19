@@ -37,14 +37,7 @@ function Tile(props) {
         occupiedSame = true;
       }
     }
-    console.log(
-      props.r,
-      props.c,
-      props.prevR,
-      props.prevC,
-      occupied,
-      props.dragging.color
-    );
+
     if (
       props.isMoveValid(
         props.r,
@@ -62,6 +55,7 @@ function Tile(props) {
       nextR = props.prevR;
       nextC = props.prevC;
     }
+
     props.addPieceToBoard(nextR, nextC);
     props.clearCurrentPiece();
   };
@@ -80,6 +74,7 @@ function Tile(props) {
           : { backgroundColor: "#7a530d" }
       }
     >
+      {props.r} {props.c}
       {props.piece !== "empty" && (
         <div
           draggable="true"

@@ -35,6 +35,8 @@ function Board(props) {
 
   const isValidPieceMove = (r1, c1, r2, c2, occupied, color) => {
     // console.log(dragging);
+    // console.log(dragging.canMove(r1, c1, r2, c2, occupied, color));
+    // console.log(dragging.pathNotBlocked(r1, c1, r2, c2, board));
     return (
       dragging.canMove(r1, c1, r2, c2, occupied, color) &&
       dragging.pathNotBlocked(r1, c1, r2, c2, board)
@@ -47,6 +49,7 @@ function Board(props) {
       return true;
     }
     //isCorrectTurn() && validPieceMove() && notInCheck()
+    // console.log(isValidPieceMove(r1, c1, r2, c2, occupied, color));
     if (
       isCorrectTurn() &&
       isValidPieceMove(r1, c1, r2, c2, occupied, color) &&
@@ -55,6 +58,7 @@ function Board(props) {
       toggleTurn();
       return true;
     }
+    return false;
   };
 
   const setCurrentPiece = (piece) => {
@@ -76,6 +80,11 @@ function Board(props) {
   return (
     <>
       <h1>{turn}</h1>
+      <h1>tile 3 3</h1>
+      <h1>
+        {board[3][3].piece === "empty" ? "empty" : board[3][3].piece.type}
+      </h1>
+      <h1>{board[3][3].canBeAttacked(board) === false ? "safe" : "danger"}</h1>
       <div className="Board draggable-piece">
         {board.map((row, rowIndex) => {
           return row.map((tile, colIndex) => {
