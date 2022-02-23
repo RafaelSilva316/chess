@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Tile from "./Tile";
 import { createBoard } from "./BoardClass";
 
@@ -11,6 +11,8 @@ function Board(props) {
   const [turn, setTurn] = useState("white");
   const [prevR, setPrevR] = useState(0);
   const [prevC, setPrevC] = useState(0);
+  const [whiteCheck, setWhiteCheck] = useState(false);
+  const [blackCheck, setBlackCheck] = useState(false);
 
   const toggleTurn = () => {
     setTurn((prevTurn) => {
@@ -34,26 +36,31 @@ function Board(props) {
   };
 
   const isValidPieceMove = (r1, c1, r2, c2, occupied, color) => {
-    // console.log(dragging);
-    // console.log(dragging.canMove(r1, c1, r2, c2, occupied, color));
-    // console.log(dragging.pathNotBlocked(r1, c1, r2, c2, board));
     return (
       dragging.canMove(r1, c1, r2, c2, occupied, color) &&
       dragging.pathNotBlocked(r1, c1, r2, c2, board)
     );
-    // return true;
   };
 
-  const isMoveValid = (r1, c1, r2, c2, occupied, color, occupiedSame) => {
+  const isMoveValid = (
+    r1,
+    c1,
+    r2,
+    c2,
+    occupied,
+    color,
+    occupiedSame,
+    checked
+  ) => {
     if (props.gameMode === "analysis") {
       return true;
     }
-    //isCorrectTurn() && validPieceMove() && notInCheck()
-    // console.log(isValidPieceMove(r1, c1, r2, c2, occupied, color));
+
     if (
       isCorrectTurn() &&
       isValidPieceMove(r1, c1, r2, c2, occupied, color) &&
-      !occupiedSame
+      !occupiedSame &&
+      !checked
     ) {
       toggleTurn();
       return true;
@@ -77,14 +84,43 @@ function Board(props) {
     });
   };
 
+  // const deriveTileFromId = (id) => {
+  //   let r = Number(id.charAt(0));
+  //   let c = Number(id.charAt(1));
+  //   return [r - 1, c - 1];
+  // };
+
+  const isKingInCheck = (clr, board) => {
+    let kingTile;
+    for (let i = 0; i < board.length; i++) {
+      for (let j = 0; j < board[i].length; j++) {
+        if (
+          board[i][j].piece.type === "king" &&
+          board[i][j].piece.color === clr
+        ) {
+          kingTile = board[i][j];
+        }
+      }
+    }
+    const potKingAttackers = kingTile.canBeAttacked(board) || [];
+    const trueKingAttackers = potKingAttackers.filter((pieceObj) => {
+      return pieceObj.color !== clr;
+    });
+    return trueKingAttackers;
+  };
+
+  useEffect(() => {
+    let isWhiteKingChecked = isKingInCheck("white", board).length > 0;
+    setWhiteCheck(isWhiteKingChecked);
+    let isBlackKingChecked = isKingInCheck("black", board).length > 0;
+    setBlackCheck(isBlackKingChecked);
+  }, [board]);
+
   return (
     <>
       <h1>{turn}</h1>
-      <h1>tile 3 3</h1>
-      <h1>
-        {board[3][3].piece === "empty" ? "empty" : board[3][3].piece.type}
-      </h1>
-      <h1>{board[3][3].canBeAttacked(board) === false ? "safe" : "danger"}</h1>
+      <h1>White King in Check: {whiteCheck ? "yes" : "no"}</h1>
+      <h1>Black King in Check: {blackCheck ? "yes" : "no"}</h1>
       <div className="Board draggable-piece">
         {board.map((row, rowIndex) => {
           return row.map((tile, colIndex) => {
@@ -105,6 +141,10 @@ function Board(props) {
                 isMoveValid={isMoveValid}
                 prevR={prevR}
                 prevC={prevC}
+                whiteCheck={whiteCheck}
+                blackCheck={blackCheck}
+                board={board}
+                isKingInCheck={isKingInCheck}
               />
             );
           });
