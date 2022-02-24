@@ -19,6 +19,7 @@ const deepCopy = (arr) => {
   });
   return copy;
 }; // Helper function to deal with Objects
+
 const deepCopyObject = (obj) => {
   let tempObj = {};
   for (let [key, value] of Object.entries(obj)) {
@@ -84,8 +85,6 @@ function Tile(props) {
     if (kingIsInCheck) {
       const fakeBoard = deepCopy(props.board);
       fakeBoard[props.r][props.c].placePiece(props.dragging);
-      // console.log(fakeBoard);
-      // console.log(props.board);
       kingIsInCheck =
         props.isKingInCheck(props.dragging.color, fakeBoard).length > 0;
     }
@@ -130,7 +129,7 @@ function Tile(props) {
           : { backgroundColor: "#7a530d" }
       }
     >
-      {props.r} {props.c}
+      {/* {props.r} {props.c} */}
       {props.piece !== "empty" && (
         <div
           draggable="true"
