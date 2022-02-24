@@ -84,14 +84,14 @@ function Tile(props) {
     if (kingIsInCheck) {
       const fakeBoard = deepCopy(props.board);
       fakeBoard[props.r][props.c].placePiece(props.dragging);
-      console.log(fakeBoard);
-      console.log(props.board);
+      // console.log(fakeBoard);
+      // console.log(props.board);
       kingIsInCheck =
         props.isKingInCheck(props.dragging.color, fakeBoard).length > 0;
     }
     //add piece to false board
     //check if fake king out of check
-    console.log(kingIsInCheck);
+    // console.log(kingIsInCheck);
     if (
       props.isMoveValid(
         props.r,
@@ -113,6 +113,7 @@ function Tile(props) {
 
     props.addPieceToBoard(nextR, nextC);
     props.clearCurrentPiece();
+    //check for mate HERE
   };
 
   return (
@@ -129,7 +130,7 @@ function Tile(props) {
           : { backgroundColor: "#7a530d" }
       }
     >
-      {/* {props.r} {props.c} */}
+      {props.r} {props.c}
       {props.piece !== "empty" && (
         <div
           draggable="true"

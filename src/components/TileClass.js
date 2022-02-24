@@ -203,7 +203,11 @@ export function createTile(idString, piece = "empty") {
         return false;
       }
       let potentialAttackerPieces = potentialAttackerTiles.map((tile) => {
-        return { type: tile.piece.type, color: tile.piece.color };
+        return {
+          type: tile.piece.type,
+          color: tile.piece.color,
+          idString: tile.idString,
+        };
       });
 
       return potentialAttackerPieces;
